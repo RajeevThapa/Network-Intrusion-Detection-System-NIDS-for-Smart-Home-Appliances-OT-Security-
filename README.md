@@ -19,6 +19,9 @@ This project simulates a real-world **Red Team vs Blue Team** scenario in a smar
 └── README.md
 ```
 
+## Conceptual Diagram
+![final](https://github.com/user-attachments/assets/bbf1fe75-687c-4e7f-838b-a43e9d89ee22)
+
 ## ⚙️ System Overview
 
 ### 👁️ NIDS Server (Ubuntu)
@@ -108,6 +111,10 @@ http://localhost:5601
 | Docker Compose    | ELK stack orchestration         |
 | Kali Linux        | Red team simulation             |
 
+## NIDS Dashboard
+
+![Screenshot 2025-05-17 at 13-07-38 Filebeat Suricata Events Overview - Elastic](https://github.com/user-attachments/assets/10c2955a-6739-46df-be20-261c001dbd23)
+
 ## 🔐 Security Recommendations
 
 - Use secure protocols (HTTPS, MQTTS, CoAPS)
@@ -119,10 +126,18 @@ http://localhost:5601
 
 > This project simulates real-world IoT attacks and defenses using open-source tools and red/blue teaming. It’s designed for hands-on security learning and research.
 
-## 📄 License
+## 📚 Academic Attribution
 
-MIT License
+This project was developed as part of the **Cyber2 – Secure Systems: Attack and Defence** course at **Aalborg University**.
 
+- **Supervisor**: Sajad Homayoun 
+- **Team Members**:
+  - Kamrul Islam
+  - Khagendra Thakurathi
+  - Mohamod Sahil Ansari
+  - Thomas F.Larsen
+  - Rajeev Thapa
+    
 ## 🤝 Contributing
 
 Pull requests welcome!
