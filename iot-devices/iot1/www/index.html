@@ -1,0 +1,18 @@
+<html>
+  <body>
+    <h1>Smart Light Bulb Status</h1>
+    <p>State: <span id="state">off</span></p>
+    <p>Color: <span id="color">white</span></p>
+    <script>
+      function updateStatus() {
+        fetch('/status.txt').then(r => r.text()).then(t => {
+          const params = new URLSearchParams(t);
+          document.getElementById('state').innerText = params.get('state');
+          document.getElementById('color').innerText = params.get('color');
+        });
+      }
+      setInterval(updateStatus, 3000);
+      updateStatus();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+# Docker Compose file for setting up Elasticsearch and Kibana (ELK stack)
+
+services:
+
+  elasticsearch:
+    image: elasticsearch:8.18.1
+    environment:
+      - discovery.type=single-node        # Run in single-node mode (no cluster)
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m    # Limit JVM heap size to 512MB
+      - xpack.security.enabled=false      # Disable built-in security (for dev use)
+      - xpack.security.transport.ssl.enabled=false  # Disable SSL between nodes
+    ports:
+      - "9200:9200"  # Expose Elasticsearch API on host port 9200
+    volumes:
+      - es_data:/usr/share/elasticsearch/data  # Persist Elasticsearch data
+    networks:
+      - elk  # Connect to custom network 'elk'
+
+  kibana:
+    image: kibana:8.18.1 
+    ports:
+      - "5601:5601"  # Expose Kibana UI on host port 5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200  # Connect to Elasticsearch
+    networks:
+      - elk  # Same network as Elasticsearch
+    depends_on:
+      - elasticsearch  # Ensure Elasticsearch starts before Kibana
+
+# Define named volume for persistent Elasticsearch data
+volumes:
+  es_data:
+    driver: local
+
+# Define a custom bridge network for isolated communication
+networks:
+  elk:
+    driver: bridge

@@ -1,0 +1,24 @@
+##
+## /var/lib/suricata/rules/custom.rules
+##
+
+# Possible Bash Reverse Shell to Attacker 
+alert tcp $HOME_NET any -> 192.168.56.20 4444 (msg:"Possible Bash Reverse Shell to Attacker (dev/tcp)"; classtype:attempted-admin; content:"/dev/tcp/"; nocase; sid:1000011; rev:1;)
+
+# Detect common shell prompts ($ for user, # for root)
+alert tcp $HOME_NET any -> 192.168.56.20 4444 (msg:"Possible Reverse Shell: Bash Prompt Detected"; classtype:attempted-admin; content:"$ "; sid:1000014; rev:1;)
+alert tcp $HOME_NET any -> 192.168.56.20 4444 (msg:"Possible Reverse Shell: Root Prompt Detected"; classtype:attempted-admin; content:"# "; sid:1000015; rev:1;)
+
+# Detect bash-specific output to strengthen confidence
+alert tcp $HOME_NET any -> 192.168.56.20 4444 (msg:"Possible Bash Shell Output Detected"; classtype:shellcode-detect; content:"GNU bash"; sid:1000016; rev:1;)
+
+# General detection of suspicious outbound connection to C2 port
+alert tcp $HOME_NET any -> 192.168.56.20 4444 (msg:"Suspicious Outbound Connection to C2 Port 4444"; classtype:policy-violation; sid:1000017; rev:1;)
+
+# Attacker Listens with Netcat
+# This doesn’t generate outbound traffic, so Suricata won’t detect this unless someone connects. Instead, focus on detecting incoming connections to this port.
+alert tcp any any -> $HOME_NET 4444 (msg:"Inbound Connection to Netcat Listener on Port 4444"; classtype:attempted-recon; sid:1000012; rev:1;)
+
+# Exfiltrating /etc/passwd via Netcat (Victim → Kali)
+# This looks for /etc/passwd pattern in the payload — the classic root:x:0:0: string.
+alert tcp $HOME_NET any -> 192.168.56.20 4444 (msg:"Suspicious File Exfiltration via Netcat (Possible /etc/passwd)"; classtype:policy-violation ; content:"root:x:0:0:"; sid:1000013; rev:1;)
